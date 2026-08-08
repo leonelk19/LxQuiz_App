@@ -1,0 +1,17 @@
+query GetUserProfile($uid: String!) {
+  userProfile(uid: $uid) {
+    uid
+    fullName
+    email
+    points
+    streak
+    educationLevel
+  }
+}
+
+mutation ReportIntegrity($input: IntegrityEventInput!) {
+  reportIntegrityEvent(input: $input) {
+    status
+    action
+  }
+}
