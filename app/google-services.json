@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "693381646215",
-    "project_id": "lxquiz",
-    "storage_bucket": "lxquiz.firebasestorage.app"
+    "project_number": "811077058146",
+    "project_id": "lxquiz-c879e",
+    "storage_bucket": "lxquiz-c879e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:693381646215:android:b71eea7adf87938403f522",
+        "mobilesdk_app_id": "1:811077058146:android:603300b921173b4d785b3b",
         "android_client_info": {
           "package_name": "com.example.lxquiz"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBvwVrVNJ4HXkd_8QMpC1aQV0n2R_SBrbk"
+          "current_key": "AIzaSyDJf7RGH-LTb_XLkoZYSNeYevpo3mvt9WA"
         }
       ],
       "services": {

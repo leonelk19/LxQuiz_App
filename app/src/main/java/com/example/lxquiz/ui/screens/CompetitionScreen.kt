@@ -35,14 +35,14 @@ import com.example.lxquiz.core.designsystem.theme.LxquizTheme
 import androidx.compose.runtime.collectAsState
 import com.example.lxquiz.ui.viewmodels.CompetitionUiState
 import com.example.lxquiz.ui.viewmodels.CompetitionViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.lxquiz.data.models.TournamentStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompetitionScreen(
     onNavigate: (String) -> Unit,
-    viewModel: CompetitionViewModel = viewModel()
+    viewModel: CompetitionViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

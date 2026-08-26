@@ -9,5 +9,6 @@ interface IAuthRepository {
     fun isEmailRegistered(email: String): Boolean
     suspend fun signUp(email: String, pass: String, profile: UserProfile): NetworkResult<UserProfile>
     suspend fun signIn(email: String, pass: String): NetworkResult<UserProfile>
+    suspend fun signInWithGoogle(idToken: String): NetworkResult<UserProfile>
     fun logout()
 }

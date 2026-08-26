@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lxquiz.core.designsystem.AssistantFAB
 import com.example.lxquiz.core.designsystem.BottomNavigationBar
-import com.example.lxquiz.core.designsystem.Divider
+import com.example.lxquiz.core.designsystem.LxDivider
 import com.example.lxquiz.core.designsystem.theme.GreenPrimary
 import com.example.lxquiz.core.designsystem.theme.GreenDark
 import androidx.compose.foundation.border
@@ -34,14 +34,14 @@ import com.example.lxquiz.ui.viewmodels.AuthViewModel
 import androidx.compose.runtime.collectAsState
 import com.example.lxquiz.ui.viewmodels.CompetitionUiState
 import com.example.lxquiz.ui.viewmodels.CompetitionViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LeaderboardScreen(
     onNavigate: (String) -> Unit,
     authViewModel: AuthViewModel,
-    competitionViewModel: CompetitionViewModel = viewModel()
+    competitionViewModel: CompetitionViewModel = hiltViewModel()
 ) {
     val authState by authViewModel.authState.collectAsState()
     val competitionState by competitionViewModel.uiState.collectAsState()
@@ -212,7 +212,7 @@ fun LeaderboardScreenContent(
                 itemsIndexed(uiState.leaderboard) { index, player ->
                     RankItem(index + 1, player.userName, "${player.points} pts")
                     if (index < uiState.leaderboard.size - 1) {
-                        Divider(color = MaterialTheme.colorScheme.outlineVariant, modifier = Modifier.padding(vertical = 8.dp))
+                        LxDivider(color = MaterialTheme.colorScheme.outlineVariant, modifier = Modifier.padding(vertical = 8.dp).fillMaxWidth())
                     }
                 }
             }

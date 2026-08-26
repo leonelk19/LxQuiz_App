@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SecurityManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) : ISecurityManager {
 
     private val _focusLossEvents = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -36,7 +36,7 @@ class SecurityManager @Inject constructor(
             try {
                 // Hard-coded requirement: App MUST be pinned
                 activity.startLockTask()
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // If pinning fails, we notify the system as a security risk
                 notifyFocusLoss()
             }

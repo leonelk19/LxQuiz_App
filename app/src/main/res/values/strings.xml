@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Lxquiz</string>
+    <string name="default_web_client_id" translatable="false">811077058146-YOUR_CLIENT_ID.apps.googleusercontent.com</string>
 </resources>

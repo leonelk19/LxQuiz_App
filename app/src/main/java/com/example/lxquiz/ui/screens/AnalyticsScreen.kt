@@ -32,14 +32,14 @@ import com.example.lxquiz.core.designsystem.theme.LxquizTheme
 import androidx.compose.runtime.collectAsState
 import com.example.lxquiz.ui.viewmodels.AnalyticsUiState
 import com.example.lxquiz.ui.viewmodels.AnalyticsViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsScreen(
     onNavigate: (String) -> Unit,
-    viewModel: AnalyticsViewModel = viewModel()
+    viewModel: AnalyticsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     

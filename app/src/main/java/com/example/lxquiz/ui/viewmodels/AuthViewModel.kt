@@ -25,6 +25,7 @@ sealed class AuthState {
 class AuthViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val signInUseCase: SignInUseCase,
+    private val signInWithGoogleUseCase: SignInWithGoogleUseCase,
     private val logoutUseCase: LogoutUseCase,
     private val isUserLoggedInUseCase: IsUserLoggedInUseCase,
     private val isEmailRegisteredUseCase: IsEmailRegisteredUseCase
@@ -68,6 +69,19 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _authState.value = AuthState.Loading
             val result = signInUseCase(email, pass)
+            when (result) {
+                is NetworkResult.Success -> _authState.value = AuthState.Success(result.data)
+                is NetworkResult.Error -> _authState.value = AuthState.Error(result.message)
+                is NetworkResult.Exception -> _authState.value = AuthState.Error(result.e.message ?: "Unknown error")
+                else -> {}
+            }
+        }
+    }
+
+    fun signInWithGoogle(idToken: String) {
+        viewModelScope.launch {
+            _authState.value = AuthState.Loading
+            val result = signInWithGoogleUseCase(idToken)
             when (result) {
                 is NetworkResult.Success -> _authState.value = AuthState.Success(result.data)
                 is NetworkResult.Error -> _authState.value = AuthState.Error(result.message)

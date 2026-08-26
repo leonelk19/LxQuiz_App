@@ -52,7 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lxquiz.core.designsystem.Divider
+import com.example.lxquiz.core.designsystem.LxDivider
 import com.example.lxquiz.core.designsystem.StepItem
 import com.example.lxquiz.core.designsystem.theme.GreenPrimary
 import com.example.lxquiz.core.designsystem.theme.LxquizTheme
@@ -187,11 +187,11 @@ fun FieldOfStudyScreenContent(
             ) {
                 StepItem(1, "Choose Field", true)
                 Spacer(modifier = Modifier.width(8.dp))
-                Divider(modifier = Modifier.width(24.dp).height(1.dp), color = MaterialTheme.colorScheme.outlineVariant)
+                LxDivider(modifier = Modifier.width(24.dp).height(1.dp), color = MaterialTheme.colorScheme.outlineVariant)
                 Spacer(modifier = Modifier.width(8.dp))
                 StepItem(2, "Select Subject", false)
                 Spacer(modifier = Modifier.width(8.dp))
-                Divider(modifier = Modifier.width(24.dp).height(1.dp), color = MaterialTheme.colorScheme.outlineVariant)
+                LxDivider(modifier = Modifier.width(24.dp).height(1.dp), color = MaterialTheme.colorScheme.outlineVariant)
                 Spacer(modifier = Modifier.width(8.dp))
                 StepItem(3, "Start Quiz", false)
             }

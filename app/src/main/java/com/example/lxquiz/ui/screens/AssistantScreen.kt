@@ -29,13 +29,13 @@ import com.example.lxquiz.core.designsystem.theme.LxquizTheme
 import androidx.compose.runtime.collectAsState
 import com.example.lxquiz.ui.viewmodels.AssistantUiState
 import com.example.lxquiz.ui.viewmodels.AssistantViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AssistantScreen(
     onBack: () -> Unit,
-    viewModel: AssistantViewModel = viewModel()
+    viewModel: AssistantViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

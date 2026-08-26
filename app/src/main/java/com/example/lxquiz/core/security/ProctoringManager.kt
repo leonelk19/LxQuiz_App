@@ -17,7 +17,7 @@ import kotlin.math.sqrt
 
 @Singleton
 class ProctoringManager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context,
 ) : IProctoringManager, SensorEventListener {
 
     private val _proctoringEvents = MutableSharedFlow<ProctoringEvent>(extraBufferCapacity = 10)
@@ -62,7 +62,7 @@ class ProctoringManager @Inject constructor(
                     val x = it.values[0]
                     val y = it.values[1]
                     val z = it.values[2]
-                    val acceleration = sqrt(x * x + y * y + z * z)
+                    val acceleration = sqrt((x * x) + (y * y) + (z * z))
                     if (acceleration > 25f) { // High movement threshold
                         _proctoringEvents.tryEmit(ProctoringEvent.AbnormalSensorReading("Suspicious Movement"))
                     }

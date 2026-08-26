@@ -1,5 +1,8 @@
 package com.example.lxquiz.ui.screens
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -16,14 +19,20 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lxquiz.R
 import com.example.lxquiz.core.designsystem.LxQuizLogo
 import com.example.lxquiz.core.designsystem.theme.GreenPrimary
 import com.example.lxquiz.core.designsystem.theme.LxquizTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -31,9 +40,27 @@ import kotlin.time.Duration.Companion.milliseconds
 fun WelcomeScreen(
     onStartJourney: () -> Unit,
     onLogin: () -> Unit,
-    onSignUp: () -> Unit
+    onSignUp: () -> Unit,
+    onGoogleSignIn: (String) -> Unit
 ) {
     var visible by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+                account?.idToken?.let { idToken ->
+                    onGoogleSignIn(idToken)
+                }
+            } catch (e: ApiException) {
+                // Handle error
+            }
+        }
+    }
     
     LaunchedEffect(Unit) {
         delay(300.milliseconds)
@@ -163,6 +190,34 @@ fun WelcomeScreen(
                                 Text("JOIN NOW")
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Sign in with Google Button
+                        OutlinedButton(
+                            onClick = {
+                                val gso = com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder(com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestIdToken(context.getString(R.string.default_web_client_id))
+                                    .requestEmail()
+                                    .build()
+                                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                                googleSignInLauncher.launch(googleSignInClient.signInIntent)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp),
+                            shape = RoundedCornerShape(32.dp),
+                            border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(width = 1.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = android.R.drawable.ic_menu_compass), // Placeholder for Google Icon
+                                contentDescription = "Google Sign In",
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("SIGN IN WITH GOOGLE", fontWeight = FontWeight.SemiBold)
+                        }
                     }
                 }
                 
@@ -176,6 +231,11 @@ fun WelcomeScreen(
 @Composable
 fun WelcomeScreenPreview() {
     LxquizTheme {
-        WelcomeScreen(onStartJourney = {}, onLogin = {}, onSignUp = {})
+        WelcomeScreen(
+            onStartJourney = {},
+            onLogin = {},
+            onSignUp = {},
+            onGoogleSignIn = {}
+        )
     }
 }

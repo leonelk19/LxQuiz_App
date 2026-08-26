@@ -45,8 +45,15 @@ fun StepItem(number: Int, label: String, isActive: Boolean, isCompleted: Boolean
 }
 
 @Composable
-fun Divider(color: Color, modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxWidth().height(1.dp).background(color))
+fun LxDivider(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.outlineVariant
+) {
+    HorizontalDivider(
+        modifier = modifier,
+        thickness = 1.dp,
+        color = color
+    )
 }
 
 @Composable

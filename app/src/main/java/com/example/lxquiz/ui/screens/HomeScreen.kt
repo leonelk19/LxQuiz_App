@@ -90,14 +90,14 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.collectAsState
 import com.example.lxquiz.ui.viewmodels.HomeUiState
 import com.example.lxquiz.ui.viewmodels.HomeViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onQuizSelected: (String) -> Unit,
     onNavigate: (String) -> Unit,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     

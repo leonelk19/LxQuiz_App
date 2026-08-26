@@ -32,7 +32,7 @@ import android.app.Activity
 import com.example.lxquiz.core.security.SecurityManager
 import com.example.lxquiz.ui.viewmodels.QuizUiState
 import com.example.lxquiz.ui.viewmodels.QuizViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,7 +40,7 @@ fun QuizScreen(
     onBack: () -> Unit,
     onComplete: () -> Unit,
     onNavigate: (String) -> Unit,
-    viewModel: QuizViewModel = viewModel()
+    viewModel: QuizViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current

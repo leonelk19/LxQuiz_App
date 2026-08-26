@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.lxquiz" />
-                  <option name="mobileSdkAppId" value="1:693381646215:android:b71eea7adf87938403f522" />
-                  <option name="projectId" value="lxquiz" />
-                  <option name="projectNumber" value="693381646215" />
+                  <option name="mobileSdkAppId" value="1:811077058146:android:603300b921173b4d785b3b" />
+                  <option name="projectId" value="lxquiz-c879e" />
+                  <option name="projectNumber" value="811077058146" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

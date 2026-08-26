@@ -1,5 +1,8 @@
 package com.example.lxquiz.ui.screens
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,29 +14,54 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lxquiz.R
 import com.example.lxquiz.core.designsystem.theme.GreenPrimary
 import com.example.lxquiz.core.designsystem.BrandingLogo
 
 import androidx.compose.foundation.border
 import androidx.compose.material3.MaterialTheme
 import com.example.lxquiz.core.designsystem.theme.LxquizTheme
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     onBack: () -> Unit,
     onSignIn: (String, String) -> Unit,
+    onGoogleSignIn: (String) -> Unit,
     onCreateAccount: () -> Unit,
     error: String? = null,
     isLoading: Boolean = false
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+                account?.idToken?.let { idToken ->
+                    onGoogleSignIn(idToken)
+                }
+            } catch (e: ApiException) {
+                // Handle error
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -150,6 +178,33 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            OutlinedButton(
+                onClick = {
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(context.getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build()
+                    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                    googleSignInLauncher.launch(googleSignInClient.signInIntent)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(width = 1.dp),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Gray)
+            ) {
+                Icon(
+                    painter = painterResource(id = android.R.drawable.ic_menu_compass),
+                    contentDescription = "Google Sign In",
+                    modifier = Modifier.size(24.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Sign in with Google", fontWeight = FontWeight.SemiBold)
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
@@ -173,6 +228,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     LxquizTheme {
-        LoginScreen(onBack = {}, onSignIn = { _, _ -> }, onCreateAccount = {})
+        LoginScreen(onBack = {}, onSignIn = { _, _ -> }, onGoogleSignIn = {}, onCreateAccount = {})
     }
 }

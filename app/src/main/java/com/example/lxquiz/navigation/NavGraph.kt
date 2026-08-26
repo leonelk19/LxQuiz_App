@@ -1,27 +1,44 @@
 package com.example.lxquiz.navigation
 
+import com.example.lxquiz.ui.screens.LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.example.lxquiz.data.models.EducationLevel
-import com.example.lxquiz.ui.screens.*
+import com.example.lxquiz.ui.screens.AnalyticsScreen
+import com.example.lxquiz.ui.screens.ArenaInstructionsScreen
+import com.example.lxquiz.ui.screens.ArenaRoomScreen
+import com.example.lxquiz.ui.screens.AssistantScreen
+import com.example.lxquiz.ui.screens.ChallengeScreen
+import com.example.lxquiz.ui.screens.CompetitionScreen
+import com.example.lxquiz.ui.screens.CurriculumSelectionScreen
+import com.example.lxquiz.ui.screens.FieldOfStudyScreen
+import com.example.lxquiz.ui.screens.HomeScreen
+import com.example.lxquiz.ui.screens.LeaderboardScreen
+import com.example.lxquiz.ui.screens.LoadingScreen
+import com.example.lxquiz.ui.screens.ProfileScreen
+import com.example.lxquiz.ui.screens.QuizScreen
+import com.example.lxquiz.ui.screens.ResultScreen
+import com.example.lxquiz.ui.screens.ReviewAnswersScreen
+import com.example.lxquiz.ui.screens.SignUpScreen
+import com.example.lxquiz.ui.screens.SubjectSelectionScreen
+import com.example.lxquiz.ui.screens.WelcomeScreen
+import com.example.lxquiz.ui.viewmodels.AnalyticsViewModel
 import com.example.lxquiz.ui.viewmodels.ArenaViewModel
+import com.example.lxquiz.ui.viewmodels.AssistantViewModel
 import com.example.lxquiz.ui.viewmodels.AuthState
 import com.example.lxquiz.ui.viewmodels.AuthViewModel
-import com.example.lxquiz.ui.viewmodels.HomeViewModel
-import com.example.lxquiz.ui.viewmodels.QuizViewModel
 import com.example.lxquiz.ui.viewmodels.CompetitionViewModel
-import com.example.lxquiz.ui.viewmodels.AnalyticsViewModel
-import com.example.lxquiz.ui.viewmodels.AssistantViewModel
+import com.example.lxquiz.ui.viewmodels.HomeViewModel
 import com.example.lxquiz.ui.viewmodels.ProfileViewModel
+import com.example.lxquiz.ui.viewmodels.QuizViewModel
 
 @Composable
 fun LxQuizNavGraph(
@@ -43,10 +60,20 @@ fun LxQuizNavGraph(
         startDestination = Destination.Welcome
     ) {
         composable<Destination.Welcome> {
+            if (authState is AuthState.Success) {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Destination.Home) {
+                        popUpTo(Destination.Welcome) { inclusive = true }
+                    }
+                    authViewModel.resetState()
+                }
+            }
+            
             WelcomeScreen(
                 onStartJourney = { navController.navigate(Destination.Home) },
                 onLogin = { navController.navigate(Destination.Login) },
-                onSignUp = { navController.navigate(Destination.SignUp) }
+                onSignUp = { navController.navigate(Destination.SignUp) },
+                onGoogleSignIn = { idToken -> authViewModel.signInWithGoogle(idToken) }
             )
         }
         
@@ -66,6 +93,7 @@ fun LxQuizNavGraph(
                     navController.popBackStack() 
                 },
                 onSignIn = { email, password -> authViewModel.signIn(email, password) },
+                onGoogleSignIn = { idToken: String -> authViewModel.signInWithGoogle(idToken) },
                 onCreateAccount = { 
                     authViewModel.resetState()
                     navController.navigate(Destination.SignUp) 
@@ -165,7 +193,7 @@ fun LxQuizNavGraph(
         
         composable<Destination.Loading> { backStackEntry ->
             val args = backStackEntry.toRoute<Destination.Loading>()
-            val quizViewModel: QuizViewModel = viewModel()
+            val quizViewModel: QuizViewModel = hiltViewModel()
             LoadingScreen(
                 subject = args.subject,
                 viewModel = quizViewModel,
@@ -206,7 +234,7 @@ fun LxQuizNavGraph(
         }
         
         composable<Destination.Analytics> {
-            val analyticsViewModel: AnalyticsViewModel = viewModel()
+            val analyticsViewModel: AnalyticsViewModel = hiltViewModel()
             AnalyticsScreen(
                 onNavigate = { route -> navigateToDestination(navController, route) },
                 viewModel = analyticsViewModel
@@ -224,7 +252,7 @@ fun LxQuizNavGraph(
         }
 
         composable<Destination.Competition> {
-            val competitionViewModel: CompetitionViewModel = viewModel()
+            val competitionViewModel: CompetitionViewModel = hiltViewModel()
             CompetitionScreen(
                 onNavigate = { route -> navigateToDestination(navController, route) },
                 viewModel = competitionViewModel
@@ -259,7 +287,7 @@ fun LxQuizNavGraph(
         }
         
         composable<Destination.Leaderboard> {
-            val competitionViewModel: CompetitionViewModel = viewModel()
+            val competitionViewModel: CompetitionViewModel = hiltViewModel()
             LeaderboardScreen(
                 onNavigate = { route -> navigateToDestination(navController, route) },
                 authViewModel = authViewModel,
@@ -281,7 +309,7 @@ fun LxQuizNavGraph(
         }
         
         composable<Destination.Assistant> {
-            val assistantViewModel: AssistantViewModel = viewModel()
+            val assistantViewModel: AssistantViewModel = hiltViewModel()
             AssistantScreen(
                 onBack = { navController.popBackStack() },
                 viewModel = assistantViewModel
