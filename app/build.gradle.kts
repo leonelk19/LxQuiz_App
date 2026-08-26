@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.apollo)
 }
 
 android {
@@ -38,13 +37,9 @@ android {
     }
 }
 
-apollo {
-    service("service") {
-        packageName.set("com.example.lxquiz")
-    }
-}
-
 dependencies {
+    implementation(project(":core"))
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
@@ -74,9 +69,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-
-    // GraphQL
-    implementation(libs.apollo.runtime)
 
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)

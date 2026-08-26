@@ -23,5 +23,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Lxquiz"
+include(":core")
 include(":app")
- 
+include(":tv")
