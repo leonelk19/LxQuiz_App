@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -90,7 +91,7 @@ fun ProfileScreen(
                         MenuItem(Icons.Default.Notifications, "Notifications")
                         MenuItem(Icons.Default.PrivacyTip, "Privacy Settings")
                         MenuItem(Icons.Default.Download, "Download Data")
-                        MenuItem(Icons.Default.Help, "Help & Support")
+                        MenuItem(Icons.AutoMirrored.Filled.Help, "Help & Support")
                         MenuItem(Icons.AutoMirrored.Filled.Logout, "Logout", isLogout = true)
                     }
                 }
